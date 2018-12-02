@@ -1,49 +1,588 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
 
-		<title>reveal.js</title>
+    <title>ECMAScript 6</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/moon.css">
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="css/theme/moon.css" class="slide">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <script src="lib/js/html5shiv.js"></script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section class="slide">
+            <h2>ECMAScript 6 — New Features: Overview & Comparison</h2>
+            <img src="images/ES6-ecmascript6-logo%20.jpg">
+        </section>
+        <section class="slide"><h4>ECMAScript 2015, also known as ES6, is a fundamental version of the ECMAScript
+            standard.</h4><img src="images/3365c-1kkmddurfooevaydt-w38xw.jpg">
+        </section>
+        <section class="slide">
+            <h6>The most important changes in ES2015 include</h6>
+            <p class="fragment">let, const and block scoping<span class="fragment">Arrow Functions</span></p>
+            <p class="fragment">Default Function Parameters<span class="fragment">Spread / Rest Operator</span></p>
+            <p class="fragment">Object Literal Extensions<span class="fragment">Octal and Binary Literals</span></p>
+            <p class="fragment">Array and Object Destructuring<span class="fragment">super in Objects</span></p>
+            <p class="fragment">Template Literal and Delimiters<span class="fragment">for...of vs for...in</span></p>
+            <p class="fragment">Map and WeakMap<span class="fragment">Set and WeakSet</span></p>
+            <p class="fragment">Classes in ES6<span class="fragment">Symbol</span></p>
+            <p class="fragment">Iterators<span class="fragment">Generators</span>
+            <p class="fragment">Promises</p>
+        </section>
+        <section>
+            <section>
+                <h4>1. let, const and block scoping</h4>
+                <img src="images/const-vs-let-vs-var.png" style="width: 600px;height: 300px">
+                <pre><code data-trim contenteditable>
+var a = 2;
+{
+    let a = 3;
+    console.log(a); // 3
+    let a = 5; // TypeError: Identifier 'a' has already been declared
+}
+console.log(a); // 2
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+					</code></pre>
+            </section>
+            <section>
+
+						<pre><code data-trim contenteditable>
+{
+    const b = 5;
+    b = 10; // TypeError: Assignment to constant variable
+
+    const arr = [5, 6];
+    arr.push(7);
+    console.log(arr); // [5,6,7]
+    arr = 10; // TypeError: Assignment to constant variable
+    arr[0] = 3; // value is mutable
+    console.log(arr); // [3,6,7]
+}
+
+
+					</code></pre>
+                <ul class="list">
+                    <li class="fragment">Hoisting of <em>let</em> and const vary from the traditional hoisting of
+                        variables and functions.
+                        Both <em>let</em> and const are hoisted, but cannot be accessed before their declaration 
+                    </li>
+                    <li class="fragment"><em>let</em> and <em>const</em> are scoped to the nearest enclosing block</li>
+                    <li class="fragment">When using <em>const</em> with fixed strings or values, CAPITAL_CASING might be
+                        appropriate (ex: const PI = 3.14)
+                    </li>
+                    <li class="fragment"><em>const</em> has to be defined with its declaration</li>
+                    <li class="fragment">Always use <em>const</em> over <em>let</em>, unless you plan on re-assigning
+                        the variable.
+                    </li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h4>2. Arrow Functions</h4>
+                <img src="images/1_3BK_UMTK8T2GGnrt4nKhxA.png" style="width:400px;height: 200px ">
+                <pre><code data-trim contenteditable>
+// Classical Function Expression
+function addition(a, b) {
+    return a + b;
+};
+
+// Implementation with arrow function
+const addition = (a, b) => a + b;
+
+// With single argument, no parentheses required
+const add5 = a => 5 + a;
+					</code></pre>
+                <h6>Behold! There is more...</h6>
+            </section>
+            <section>
+                <p>Arrow functions don't just make the code shorter. They are closely related to <em>this</em> binding
+                    behavior.</p>
+                <p style="font-size: 20px;color: #0d99a5 ">In ECMAScript 3/5</p>
+                <pre><code data-trim contenteditable>
+function Person() {
+    var self = this;
+    self.age = 0;
+    setInterval(function growUp() {
+        // The callback refers to the `self` variable of which
+        // the value is the expected object.
+        self.age++;
+    }, 1000);
+}
+					</code></pre>
+                <p style="font-size: 20px;color: #0d99a5 ">In ECMAScript 6</p>
+
+                <pre><code data-trim contenteditable>
+function Person() {
+    this.age = 0;
+    setInterval(() => {
+        this.age++;//`this` properly refers to the person object
+    }, 1000);
+}
+
+					</code></pre>
+            </section>
+        </section>
+        <section>
+            <h4>3. Default Function Parameters</h4>
+            <p>ES6 allows you to set default parameters in function definitions. Here is a simple illustration.</p>
+            <pre><code data-trim contenteditable>
+let getFinalPrice = (price, tax = 0.7) => price + price * tax;
+getFinalPrice(500); // 850
+
+getFinalPrice(500, 0.2); //600
+
+					</code></pre>
+        </section>
+        <section>
+            <h4>4. Spread / Rest Operator</h4>
+            <img src="images/Без%20названия.png">
+            <p>... operator is referred to as spread or rest operator, depending on how and where it is used.</p>
+            <pre><code data-trim contenteditable>
+const arr1 = [1, 2, 3];
+const arr2 = [7, 8, 9];
+console.log([...arr1, 4, 5, 6, ...arr2]) // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+function foo(...args) {
+    console.log(args);
+}
+foo(1, 2, 3, 4, 5); // [1, 2, 3, 4, 5]
+
+
+					</code></pre>
+        </section>
+        <section>
+            <h4>5. Object Literal Extensions</h4>
+            <p>ES6 allows declaring object literals by providing shorthand syntax for initializing properties from variables and defining function methods.
+                It also enables the ability to have computed property keys in an object literal definition.</p>
+            <pre><code data-trim contenteditable>
+function getCar(make, model, value) {
+    return {
+        // with property value shorthand
+        // syntax, you can omit the property
+        // value if key matches variable
+        // name
+        make,  // same as make: make
+        model, // same as model: model
+        value, // same as value: value
+
+        // computed values now work with
+        // object literals
+        ['make' + make]: true,
+
+        // Method definition shorthand syntax
+        // omits `function` keyword & colon
+        depreciate() {
+            this.value -= 2500;
+        }
+    };
+}
+
+let car = getCar('Kia', 'Sorento', 40000);
+console.log(car);
+// {
+//     make: 'Kia',
+//     model:'Sorento',
+//     value: 40000,
+//     makeKia: true,
+//     depreciate: function()
+// }
+
+
+
+					</code></pre>
+        </section>
+        <section>
+            <h4>6. Octal and Binary Literals</h4>
+            <p>ES6 has new support for octal and binary literals</p>
+            <pre><code data-trim contenteditable>
+let oValue = 0o10;
+console.log(oValue); // 8
+
+let bValue = 0b10; // 0b or 0B for binary
+console.log(bValue); // 2
+
+foo(1, 2, 3, 4, 5); // [1, 2, 3, 4, 5]
+
+
+					</code></pre>
+        </section>
+        <section>
+        <h4>7. Array and Object Destructuring</h4>
+        <p>Destructuring helps in avoiding the need for temp variables when dealing with object and arrays.</p>
+        <pre><code data-trim contenteditable>
+function foo() {
+    return [1, 2, 3];
+}
+let arr = foo(); // [1,2,3]
+
+let [a, b, c] = foo();
+console.log(a, b, c); // 1 2 3
+function getCar() {
+  return {
+    make: 'Tesla',
+    model: 'g95',
+    metadata: {
+      vin: '123abc',
+      miles: '12000'
+    }
+  };
+}
+
+const {make, model} = getCar();
+console.log(make, model); // Tesla g95
+
+const {make, metadata: {miles}} = getCar();
+console.log(make, miles); // Tesla 12000
+
+					</code></pre>
+        </section>
+        <section>
+            <h4>8. super in Objects</h4>
+            <p>ES6 allows to use super method in (classless) objects with prototypes.</p>
+            <pre><code data-trim contenteditable>
+const parent = {
+    foo() {
+        console.log("Hello from the Parent");
+    }
+}
+const child = {
+    foo() {
+        super.foo();
+        console.log("Hello from the Child");
+    }
+}
+Object.setPrototypeOf(child, parent);
+child.foo(); // Hello from the Parent
+             // Hello from the Child
+
+					</code></pre>
+        </section>
+        <section>
+            <h4>9. Template Literal and Delimiters</h4>
+            <img src="images/1__qImOaSkNxf3f7UK-YiT0A.jpeg" style="width: 500px;height: 200px">
+            <p>ES6 introduces an easier way to add interpolations which are evaluated automatically.</p>
+
+            <pre><code data-trim contenteditable>
+let user = 'Kevin';
+console.log(`Hi ${user}!`); // Hi Kevin!
+					</code></pre>
+            <ul class="list">
+                <li class="fragment">`${ ... }` is used for rendering the variables.</li>
+                <li class="fragment">` Backtick is used as delimiter.</li>
+            </ul>
+        </section>
+        <section>
+            <h4>10. for...of vs for...in</h4>
+                <p>for...of iterates over iterable objects, such as array.</p>
+
+            <pre><code data-trim contenteditable>
+const nicknames = ['di', 'boo', 'punkeye'];
+nicknames.size = 3;
+for (let nickname of nicknames) {
+    console.log(nickname);
+}
+// di
+// boo
+// punkeye
+					</code></pre>
+                <p>for...in iterates over all enumerable properties of an object.</p>
+                <pre><code data-trim contenteditable>
+const nicknames = ['di', 'boo', 'punkeye'];
+nicknames.size = 3;
+for (let nickname in nicknames) {
+    console.log(nickname);
+}
+// 0
+// 1
+// 2
+// size
+
+					</code></pre>
+        </section>
+        <section>
+        <section>
+            <h4>11. Map and WeakMap</h4>
+            <p>ES6 introduces new set of data structures called Map and WeakMap</p>
+            <pre><code data-trim contenteditable>
+const myMap = new Map();
+
+const keyString = "a string",
+    keyObj = {},
+    keyFunc = () => {};
+
+// setting the values
+myMap.set(keyString, "value associated with 'a string'");
+myMap.set(keyObj, "value associated with keyObj");
+myMap.set(keyFunc, "value associated with keyFunc");
+
+myMap.size; // 3
+
+// getting the values
+myMap.get(keyString);    // "value associated with 'a string'"
+myMap.get(keyObj);       // "value associated with keyObj"
+myMap.get(keyFunc);      // "value associated with keyFunc"
+
+					</code></pre>
+        </section>
+        <section>
+            <img src="images/240f41b6e7b1bd6588ad1329e369270a.png"  style="width: 350px;height: 200px;margin-top: -2%" >
+            <p style="font-size: 20px;margin-top: -1%">A WeakMap only has four methods delete(key), has(key), get(key) and set(key, value)</p>
+
+            <pre><code data-trim contenteditable>
+const w = new WeakMap();
+w.set('a', 'b');
+// Uncaught TypeError: Invalid value used as weak map key
+
+const o1 = {},
+    o2 = () => {},
+    o3 = window;
+
+w.set(o1, 37);
+w.set(o2, "azerty");
+w.set(o3, undefined);
+
+w.get(o3); // undefined, because that is the set value
+
+w.has(o1); // true
+w.delete(o1);
+w.has(o1); // false
+					</code></pre>
+        </section>
+    </section>
+        <section>
+            <section>
+                <h4>12. Set and WeakSet</h4>
+                <p>Set objects are collections of unique values</p>
+                <pre><code data-trim contenteditable>
+const mySet = new Set([1, 1, 2, 2, 3, 3]);
+mySet.size; // 3
+mySet.has(1); // true
+mySet.add('strings');
+mySet.add({ a: 1, b:2 });
+					</code></pre>
+            </section>
+            <section>
+                <p>Similar to WeakMap, the WeakSet object lets you store weakly held objects in a collection</p>
+                <pre><code data-trim contenteditable>
+const ws = new WeakSet();
+const obj = {};
+const foo = {};
+
+ws.add(window);
+ws.add(obj);
+
+ws.has(window); // true
+ws.has(foo);    // false, foo has not been added to the set
+
+ws.delete(window); // removes window from the set
+ws.has(window);    // false, window has been removed
+
+					</code></pre>
+            </section>
+        </section>
+        <section>
+        <section>
+            <h4>13. Classes in ES6</h4>
+            <p>ES6 introduces new class syntax</p>
+            <pre><code data-trim contenteditable>
+class Task {
+    constructor() {
+        console.log("task instantiated!");
+    }
+
+    showId() {
+        console.log(23);
+    }
+
+    static loadAll() {
+        console.log("Loading all tasks..");
+    }
+}
+
+console.log(typeof Task); // function
+const task = new Task(); // "task instantiated!"
+task.showId(); // 23
+Task.loadAll(); // "Loading all tasks.."
+					</code></pre>
+        </section>
+            <section>
+                <h4>extends and super in classes</h4>
+                <pre><code data-trim contenteditable>
+class Car {
+    constructor() {
+        console.log("Creating a new car");
+    }
+}
+
+class Porsche extends Car {
+    constructor() {
+        super();
+        console.log("Creating Porsche");
+    }
+}
+
+let c = new Porsche();
+// Creating a new car
+// Creating Porsche
+					</code></pre>
+                <ul class="list">
+                    <li class="fragment">Class declarations are not hoisted. You first need to declare your class and then access it, otherwise ReferenceError will be thrown</li>
+                    <li class="fragment">There is no need to use function keyword when defining functions inside a class definition</li>
+                </ul>
+
+        </section>
+        </section>
+        <section>
+            <h4>14. Symbol</h4>
+            <p>A Symbol is a unique and immutable data type introduced in ES6</p>
+            <pre><code data-trim contenteditable>
+const sym = Symbol("some optional description");
+console.log(typeof sym); // symbol
+					</code></pre>
+            <p>To retrieve an object’s symbol properties, use Object.getOwnPropertySymbols</p>
+            <pre><code data-trim contenteditable>
+const o = {
+    val: 10,
+    [Symbol("random")]: "I'm a symbol",
+};
+
+console.log(Object.getOwnPropertyNames(o)); // val
+					</code></pre>
+        </section>
+        <section>
+            <h4>15. Iterators</h4>
+            <img src="images/4EhUVp10Tc29Jyp1WVkb_Group.png.webp" style="width: 400px;height: 200px">
+            <p>An iterator accesses the items from a collection one at a time, while keeping track of its current position within that sequence.</p>
+            <pre><code data-trim contenteditable>
+const arr = [11,12,13];
+const itr = arr[Symbol.iterator]();
+
+itr.next(); // { value: 11, done: false }
+itr.next(); // { value: 12, done: false }
+itr.next(); // { value: 13, done: false }
+
+itr.next(); // { value: undefined, done: true }
+
+					</code></pre>
+           
+        </section>
+        <section>
+            <h4>16. Generators</h4>
+            <img src="images/1_MXbzAy1MKoYz7i4M3YXNlw.png" style="width: 300px">
+            <p>A generator function returns an iterable object when it's called</p>
+            <pre><code data-trim contenteditable>
+function *infiniteNumbers() {
+    let n = 1;
+    while (true) {
+        yield n++;
+    }
+}
+
+const numbers = infiniteNumbers(); // returns an iterable object
+
+numbers.next(); // { value: 1, done: false }
+numbers.next(); // { value: 2, done: false }
+numbers.next(); // { value: 3, done: false }
+
+					</code></pre>
+
+        </section>
+        <section>
+            <section>
+            <h4>17. Promises</h4>
+            <p>ES6 has native support for promises</p>
+            <img src="images/4251.promise_diagram_2_23D40F3D.png" style="width: 800px">
+        </section>
+            <section>
+                <p>The standard way to create a Promise is by using the new Promise() constructor which accepts a handler that is given two functions as parameters</p>
+                <pre><code data-trim contenteditable>
+const p = new Promise((resolve, reject) => {
+    if (/* condition */) {
+        resolve(/* value */);  // fulfilled successfully
+    } else {
+        reject(/* reason */);  // error, rejected
+    }
+});
+					</code></pre>
+                <p>Every Promise has a method named <em>then</em> which takes a pair of callbacks</p>
+                <pre><code data-trim contenteditable>
+p.then((val) => console.log("Promise Resolved", val),
+       (err) => console.log("Promise Rejected", err));
+					</code></pre>
+            </section>
+            <section>
+                <p>Returning a value from then callbacks will pass the value to the next then callback.</p>
+                <pre><code data-trim contenteditable>
+const hello = new Promise((resolve, reject) => { resolve("Hello") });
+
+hello.then((str) => `${str} World`)
+     .then((str) => `${str}!`)
+     .then((str) => console.log(str)) // Hello World!
+					</code></pre>
+                <p>When returning a promise, the resolved value of the promise will get
+                    passed to the next callback to effectively chain them together. This is a simple technique to avoid "callback hell".</p>
+                <pre><code data-trim contenteditable>
+const p = new Promise((resolve, reject) => { resolve(1) });
+
+const eventuallyAdd1 = (val) => new Promise((resolve, reject) => { resolve(val + 1) });
+
+p.then(eventuallyAdd1)
+ .then(eventuallyAdd1)
+ .then((val) => console.log(val)); // 3
+
+					</code></pre>
+
+            </section>
+
+        </section>
+        <section>
+            <img src="images/maxresdefault.jpg" style="height: 300px">
+            <h4>Useful links:</h4>
+            <a href="https://learn.javascript.ru/es-modern" target="_blank">learn.javascript.ru</a><br>
+            <a href="http://es6-features.org/#Constants" target="_blank">es6-features.org</a>
+            <p>Yan Polyn  <a href="https://github.com/" target="_blank">github.com</a> 2018</p>
+        </section>
+    </div>
+</div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    Reveal.initialize({
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+</script>
+</body>
 </html>
