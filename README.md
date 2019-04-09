@@ -1,1 +1,1 @@
-# ES6-Presentation
+# https://kvinto1986.github.io/ES6-Presentation/
